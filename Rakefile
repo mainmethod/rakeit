@@ -7,6 +7,7 @@ namespace :git do
   end
   
   namespace :ignore do
+    desc "adds file or path to .gitignore"
     task :add, :entry do |t, args|
       File.open('.gitignore','a+') do |file|
         append = true
@@ -17,6 +18,7 @@ namespace :git do
       end
     end
     
+    desc "removes file or path from .gitignore"
     task :remove, :entry do |t, args|
       lines_array = File.readlines('.gitignore')
       File.open('.gitignore','w') do |file|
