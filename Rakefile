@@ -1,14 +1,16 @@
 namespace :git do
   task :default do
     if(!system("command -v git >/dev/null 2>&1"))
-      puts "git not found"
+      puts "git not found. throw desk"
+      exit
+    else
+      puts "..git detected. party"
     end
-    exit
   end
   
   namespace :ignore do
     desc "adds file or path to .gitignore"
-    task :add, :entry do |t, args|
+    task :add, [:entry] => :default do |t, args|
       File.open('.gitignore','a+') do |file|
         append = true
         file.each_line do |line|
@@ -24,14 +26,14 @@ namespace :git do
     end
     
     desc "removes file or path from .gitignore"
-    task :remove, :entry do |t, args|
+    task :remove, [:entry] => :default do |t, args|
       lines_array = File.readlines('.gitignore')
       File.open('.gitignore','w') do |file|
         lines_array.each do |line|
           if(line.strip != args[:entry].strip)
             file.puts line.strip
           else
-            puts "  #{args[:entry]} removed"
+            puts "  #{args[:entry]} removed from .gitignore"
           end
         end
       end
@@ -40,4 +42,4 @@ namespace :git do
   
 end
 
-task :gitignore => 'git:default'
+task :git => 'git:default'
